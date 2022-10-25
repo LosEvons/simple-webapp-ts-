@@ -1,5 +1,5 @@
 <html>
-    <script src="main.ts"></script>
+    <script src="main.js"></script>
     <head>
         <h1>
             <p style="text-align: left;">Game:</p>
@@ -7,17 +7,23 @@
                 <thread>
                     <tr>
                         <th>Resources</th>
-                        <th colspan="2"></th>
+                        <th colspan="3"></th>
                     </tr>
                 </thread>
                 <tbody>
                     <tr>
                         <td>Wood</td>
-                        <td id="wood-count;"> 0 </td>
+                        <td>
+                            <input type="text" id="wood-count" value="0"/>
+                            <input type="button" onclick="harvestWood()" value="Harvest"/>
+                        </td>
                     </tr>
                     <tr>
                         <td>Stone</td>
-                        <td id="stone-count;"> 0 </td>
+                        <td>
+                            <input type="text" id="stone-count" value="0"/>
+                            <input type="button" onclick="harvestStone()" value="Harvest"/>
+                        </td>
                     </tr>
                 </tbody>
             </table>
