@@ -1,5 +1,5 @@
-let wood_harvesters = 0;
-let stone_harvesters = 0;
+var wood_harvesters = 0;
+var stone_harvesters = 0;
 
 function harvestWood()
 {
@@ -25,22 +25,20 @@ function addWoodHarvester()
 function processHarvesters()
 {
     var wood_value = parseInt(document.getElementById('wood-count').value, 10);
-    wood_value = isNaN(value) ? 0 : wood_value;
+    wood_value = isNaN(wood_value) ? 0 : wood_value;
     wood_value += wood_harvesters;
+    document.getElementById('wood-count').value = wood_value;
 
     var stone_value = parseInt(document.getElementById('stone-count').value, 10);
     stone_value = isNaN(stone_value) ? 0 : stone_value;
     stone_value += stone_harvesters;
+    document.getElementById('stone-count').value = stone_value;
 }
 
 function addStoneHarvester()
 {
     stone_harvesters++;
 }
-
-(function main()
-{
-    console.log("test");
+setInterval(function(){
     processHarvesters();
-    setTimeout(main, 1000);
-})();
+}, 1000);
