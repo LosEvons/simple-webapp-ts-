@@ -1,3 +1,18 @@
+class Resource {
+    constructor(amount = 0, harvester_count = 0, harvester_status = 0) {
+        this.amount = amount;
+        this.harvester_count = harvester_count;
+        this.harvester_status = harvester_status;
+    }
+
+    addAmount(add_amount) {
+        this.amount += add_amount;
+    }
+}
+
+const Wood = new Resource();
+const Stone = new Resource(); 
+
 var wood_harvesters = 0;
 var stone_harvesters = 0;
 var stone_harvester_added = 0;
@@ -20,18 +35,17 @@ function harvestStone()
 }
 
 function addWoodHarvester()
-{
+{ 
     button = document.getElementById("add_wood_harvester_button");
     button.disabled = true;
-    wood_harvester_added++;
-    if (wood_harvester_added == 11) {
-        wood_harvesters++;
-        wood_harvester_added = 0;
+    Wood.harvester_status++;
+    if (Wood.harvester_status == 11) {
+        Wood.harvester_count++;
+        Wood.harvester_status = 0;
         button.disabled = false;
-        updateWoodProgressBar(wood_harvester_added);
-        return wood_harvester_added;
+        updateWoodProgressBar(Wood.harvester_status);
     } else {
-        updateWoodProgressBar(wood_harvester_added);
+        updateWoodProgressBar(Wood.harvester_status);
     }
 }
 
@@ -39,33 +53,32 @@ function addStoneHarvester()
 {
     button = document.getElementById("add_stone_harvester_button");
     button.disabled = true;
-    stone_harvester_added++;
-    if (stone_harvester_added == 11) {
-        stone_harvesters++;
-        stone_harvester_added = 0;
+    Stone.harvester_status++;
+    if (Stone.harvester_status == 11) {
+        Stone.harvester_count++;
+        Stone.harvester_status = 0;
         button.disabled = false;
-        updateStoneProgressBar(stone_harvester_added);
-        return stone_harvester_added;
+        updateStoneProgressBar(Stone.harvester_status);
     } else {
-        updateStoneProgressBar(stone_harvester_added);
+        updateStoneProgressBar(Stone.harvester_status);
     }
 }
 
 function processHarvesters()
 {
-    if (wood_harvester_added)
+    if (Wood.harvester_status)
         addWoodHarvester();
-    if (stone_harvester_added)
+    if (Stone.harvester_status)
         addStoneHarvester();
 
     var wood_value = parseInt(document.getElementById('wood-count').value, 10);
     wood_value = isNaN(wood_value) ? 0 : wood_value;
-    wood_value += wood_harvesters;
+    wood_value += Wood.harvester_count;
     document.getElementById('wood-count').value = wood_value;
 
     var stone_value = parseInt(document.getElementById('stone-count').value, 10);
     stone_value = isNaN(stone_value) ? 0 : stone_value;
-    stone_value += stone_harvesters;
+    stone_value += Stone.harvester_count;
     document.getElementById('stone-count').value = stone_value;
 }
 
