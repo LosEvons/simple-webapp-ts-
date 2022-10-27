@@ -1,4 +1,29 @@
+<!DOCTYPE html>
 <html>
+    <style>
+        #progress_status {
+            width: 42.5%;
+            background-color: #ddd;
+        }
+
+        #wood_progress_bar {
+            width: 0%;
+            height: 20px;
+            background-color: #ff9900;
+            text-align: center;
+            line-height: 32px;
+            color: black;
+        }
+
+        #stone_progress_bar {
+            width: 0%;
+            height: 20px;
+            background-color: #6d6d6d;
+            text-align: center;
+            line-height: 32px;
+            color: black;
+        }
+    </style>
     <script src="main.js"></script>
     <head>
         <h1>
@@ -16,7 +41,10 @@
                         <td>
                             <input type="text" id= "wood-count" value="0"/>
                             <input type="button" onclick="harvestWood()" value="Harvest"/>
-                            <input type="button" onclick="addWoodHarvester()" value="Buy auto harvester"/>
+                            <input id="add_wood_harvester_button" type="button" onclick="addWoodHarvester()" value="Buy auto harvester"/>
+                            <div id="progress_status">
+                                <div id="wood_progress_bar"></div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -24,7 +52,10 @@
                         <td>
                             <input type="text" id="stone-count" value="0"/>
                             <input type="button" onclick="harvestStone()" value="Harvest"/>
-                            <input type="button" onclick="addStoneHarvester()" value="Buy auto harvester"/>
+                            <input id="add_stone_harvester_button" type="button" onclick="addStoneHarvester()" value="Buy auto harvester"/>
+                            <div id="progress_status">
+                                <div id="stone_progress_bar"></div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

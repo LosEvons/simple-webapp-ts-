@@ -1,0 +1,13 @@
+#Progress_status {
+    width: 100%;
+    background-color: #ddd;
+}
+
+#myProgressBar {
+    width: 1%;
+    height: 30px;
+    background-color: #4CAF50;
+    text-align: center;
+    line-height: 32px;
+    color: black;
+}
