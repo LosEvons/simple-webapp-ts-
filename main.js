@@ -1,10 +1,13 @@
 class Resource {
-    constructor(amount = 0, harvester_count = 0, harvest_strength = 1, harvester_status = 0, improvement_status = 0) {
+    constructor(amount_id, harvest_button_id, improvement_button_id, amount = 0, harvester_count = 0, harvest_strength = 1, harvester_status = 0, improvement_status = 0) {
         this.amount = amount;
         this.harvester_count = harvester_count;
         this.harvest_strength = harvest_strength;
         this.harvester_status = harvester_status;
         this.improvement_status = improvement_status;
+        this.amount_id = amount_id;
+        this.harvest_button_id = harvest_button_id;
+        this.improvement_button_id = improvement_button_id;
     }
 
     addAmount(add_amount) {
@@ -17,6 +20,13 @@ class Resource {
 
     updateResouceValue(show_in_location) {
         document.getElementById(show_in_location).value = this.amount;
+    }
+
+    harvest() {
+        this.addAmount(this.harvest_strength);
+        let this_value = parseInt(document.getElementById(this.amount_id).value, 10);
+        this_value += this.harvest_strength;
+        document.getElementById(this.amount_id).value = this_value;
     }
 }
 
@@ -49,26 +59,8 @@ class DateTime {
 
 const Datetime = new DateTime();
 
-const Wood = new Resource();
-const Stone = new Resource(); 
-
-function harvestWood()
-{
-    Wood.addAmount(Wood.harvest_strength);
-    // the following is just to make harvesting more responsive.
-    wood_value = parseInt(document.getElementById('wood-count').value, 10);
-    wood_value += Wood.harvest_strength;
-    document.getElementById('wood-count').value = wood_value;
-}
-
-function harvestStone()
-{
-    Stone.addAmount(Stone.harvest_strength);
-    // the following is just to make harvesting more responsive.
-    stone_value = parseInt(document.getElementById('stone-count').value, 10);
-    stone_value += Stone.harvest_strength;
-    document.getElementById('stone-count').value = stone_value;
-}
+const Wood = new Resource("wood-count" ,"add_wood_harvester_button", "improve-wood");
+const Stone = new Resource("stone-count", "add_stone_harvester_button", "improve-stone");
 
 function addWoodHarvester()
 {
