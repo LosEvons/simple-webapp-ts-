@@ -2,9 +2,8 @@
 <html>
     <style>
         #progress_status {
-            width: 42.5%;
+            width: 50.5%;
             background-color: #ddd;
-            opacity: 0.5;
         }
 
         #wood_progress_bar {
@@ -23,14 +22,23 @@
             text-align: center;
             line-height: 32px;
             color: black;
-            opacity: 0.5;
+        }
+
+        #add_stone_harvester_button {
+            width: 70px;
+            height: 20px;
+        }
+
+        #add_wood_harvester_button {
+            width: 70px;
+            height: 20px;
         }
 
     </style>
     <script src="main.js"></script>
     <head>
         <h1>
-            <p style="text-align: left;">Game:</p>
+            <p id="currentgamedate" style="text-align: left;">Current Date</p>
             <table style="float: left;">
                 <thread>
                     <tr>
@@ -45,6 +53,7 @@
                             <input type="text" id= "wood-count" value="0"/>
                             <input type="button" onclick="harvestWood()" value="Harvest"/>
                             <input id="add_wood_harvester_button" type="button" onclick="addWoodHarvester()" value="Invest"/>
+                            <input id="improve-wood" type="button" onclick="improveWood()" value="Improve">
                             <div id="progress_status">
                                 <div id="wood_progress_bar"></div>
                             </div>
@@ -56,9 +65,9 @@
                             <input type="text" id="stone-count" value="0"/>
                             <input type="button" onclick="harvestStone()" value="Harvest"/>
                             <input id="add_stone_harvester_button" type="button" onclick="addStoneHarvester()" value="Invest">
-                                <div id="progress_status">
-                                    <div id="stone_progress_bar"></div>
-                                </input>
+                            <input id="improve-stone" type="button" onclick="improveStone()" value="Improve">
+                            <div id="progress_status">
+                                <div id="stone_progress_bar"></div>
                             </div>
                         </td>
                     </tr>
