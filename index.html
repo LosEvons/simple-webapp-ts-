@@ -4,6 +4,7 @@
         #progress_status {
             width: 42.5%;
             background-color: #ddd;
+            opacity: 0.5;
         }
 
         #wood_progress_bar {
@@ -22,7 +23,9 @@
             text-align: center;
             line-height: 32px;
             color: black;
+            opacity: 0.5;
         }
+
     </style>
     <script src="main.js"></script>
     <head>
@@ -41,7 +44,7 @@
                         <td>
                             <input type="text" id= "wood-count" value="0"/>
                             <input type="button" onclick="harvestWood()" value="Harvest"/>
-                            <input id="add_wood_harvester_button" type="button" onclick="addWoodHarvester()" value="Buy auto harvester"/>
+                            <input id="add_wood_harvester_button" type="button" onclick="addWoodHarvester()" value="Invest"/>
                             <div id="progress_status">
                                 <div id="wood_progress_bar"></div>
                             </div>
@@ -52,9 +55,10 @@
                         <td>
                             <input type="text" id="stone-count" value="0"/>
                             <input type="button" onclick="harvestStone()" value="Harvest"/>
-                            <input id="add_stone_harvester_button" type="button" onclick="addStoneHarvester()" value="Buy auto harvester"/>
-                            <div id="progress_status">
-                                <div id="stone_progress_bar"></div>
+                            <input id="add_stone_harvester_button" type="button" onclick="addStoneHarvester()" value="Invest">
+                                <div id="progress_status">
+                                    <div id="stone_progress_bar"></div>
+                                </input>
                             </div>
                         </td>
                     </tr>
