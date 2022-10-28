@@ -1,5 +1,5 @@
 class Resource {
-    constructor(amount_id, progbar, harvest_button_id, improvement_button_id, amount = 0, harvester_count = 0, harvest_strength = 1, harvester_status = 0, improvement_status = 0) {
+    constructor(amount_id, progbar, harvest_button_id, improvement_button_id, amount = 0, harvester_count = 0, harvest_strength = 1, harvester_status = 0, improvement_status = 0, build_cost = 10, improve_cost = 50) {
         this.amount = amount;
         this.harvester_count = harvester_count;
         this.harvest_strength = harvest_strength;
@@ -9,16 +9,51 @@ class Resource {
         this.progbar = progbar;
         this.harvest_button_id = harvest_button_id;
         this.improvement_button_id = improvement_button_id;
+        this.build_cost = build_cost;
+        this.improve_cost = improve_cost;
+    }
+
+    update() {
+        if (this.harvester_status)
+            this.addHarvester();
+        if (this.improvement_status)
+            this.improve();
+        
+        this.processHarvester();
+        this,this.updateResourceValue(this.amount_id);
+        this.enableButtons();
     }
 
     enableButtons() {
         var button = document.getElementById(this.harvest_button_id);
-        button.disabled = false;
-        button.value = "Invest";
+
+        if (this.harvester_status) {
+            button.disabled = true;
+            button.value = "Working...";
+        } else if (this.improvement_status) {
+            button.disabled = true;
+            button.value = "Invest";
+        } else if (this.build_cost > this.amount) {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+            button.value = "Invest";
+        }
 
         button = document.getElementById(this.improvement_button_id);
-        button.disabled = false;
-        button.value = "Improve";
+        
+        if (this.improvement_status) {
+            button.disabled = true;
+            button.value = "Improving...";
+        } else if (this.harvester_status) {
+            button.disabled = true;
+            button.value = "Improve";
+        } else if (this.improve_cost > this.amount) {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+            button.value = "Improve";
+        }
     }
     
     updateProgressBar() {
@@ -57,18 +92,16 @@ class Resource {
     }
 
     addHarvester() {
-        if(this.harvester_status == 0){
+        if (!this.harvester_status){
             document.getElementById(this.harvest_button_id).disabled = true;
             document.getElementById(this.improvement_button_id).disabled = true;
-            document.getElementById(this.harvest_button_id).value = "Building..."
+            this.amount -= this.build_cost;
         }
-
         this.harvester_status++;
 
         if (this.harvester_status == 11) {
             this.harvester_count++;
             this.harvester_status = 0;
-            this.enableButtons();
             this.updateProgressBar();
         } else {
             this.updateProgressBar();
@@ -76,18 +109,16 @@ class Resource {
     }
 
     improve() {
-        if(this.improvement_status == 0){
-            document.getElementById(this.harvest_button_id).disabled = true;
+        if (!this.improvement_status){
             document.getElementById(this.improvement_button_id).disabled = true;
-            document.getElementById(this.improvement_button_id).value = "Improving...";
+            document.getElementById(this.harvest_button_id).disabled = true;
+            this.amount -= this.improve_cost;
         }
-
         this.improvement_status++;
 
         if (this.improvement_status == 11) {
             this.harvest_strength++;
             this.improvement_status = 0;
-            this.enableButtons();
             this.updateProgressBar();
         } else {
             this.updateProgressBar();
@@ -134,18 +165,8 @@ setInterval(function(){
     updateDate();
 }, 1000);
 
-function updateResourceStates()
-{
-    for (const element of Resources) {
-        if (element.harvester_status)
-            element.addHarvester();
-        if (element.improvement_status)
-            element.improve();
-
-        element.processHarvester();
-        element.updateResourceValue(element.amount_id);
-    }
-}
+function updateResourceStates(){
+    for (const element of Resources) {element.update();}}
 
 function updateDate(){
     Datetime.advanceTime();
