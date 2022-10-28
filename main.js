@@ -12,7 +12,7 @@ class Resource {
     }
 
     enableButtons() {
-        button = document.getElementById(this.harvest_button_id);
+        var button = document.getElementById(this.harvest_button_id);
         button.disabled = false;
         button.value = "Invest";
 
@@ -24,21 +24,20 @@ class Resource {
     updateProgressBar() {
         var element = document.getElementById(this.progbar);
         var width_increment = 10;
-
-        switch(0) {
-            case this.harvester_status:
-                var current_width = width_increment * this.harvester_status;
-                element.style.width = current_width + '%';
-                break;
-            case this.improvement_status:
-                var current_width = width_increment * this.improvement_status;
-                element.style.width = current_width + '%';
-                break;
+        
+        if (this.harvester_status){
+            var current_width = width_increment * this.harvester_status;
+            element.style.width = current_width + '%';
+        } else if (this.improvement_status) {
+            var current_width = width_increment * this.improvement_status;
+            element.style.width = current_width + '%';
+        } else {
+            element.style.width = 0 + '%';
         }
         
     }
 
-    updateResouceValue(show_in_location) {
+    updateResourceValue(show_in_location) {
         document.getElementById(show_in_location).value = this.amount;
     }
 
@@ -75,6 +74,25 @@ class Resource {
             this.updateProgressBar();
         }
     }
+
+    improve() {
+        if(this.improvement_status == 0){
+            document.getElementById(this.harvest_button_id).disabled = true;
+            document.getElementById(this.improvement_button_id).disabled = true;
+            document.getElementById(this.improvement_button_id).value = "Improving...";
+        }
+
+        this.improvement_status++;
+
+        if (this.improvement_status == 11) {
+            this.harvest_strength++;
+            this.improvement_status = 0;
+            this.enableButtons();
+            this.updateProgressBar();
+        } else {
+            this.updateProgressBar();
+        }
+    }
 }
 
 class DateTime {
@@ -100,7 +118,7 @@ class DateTime {
     }
 
     getCurrentGameDate(){
-        return "Day: " + (this.day*30).toFixed() + " Month: " + (this.month*12).toFixed() + " Year: " + this.year;
+        return (this.day*30).toFixed() + " / " + (this.month*12).toFixed() + " / " + this.year;
     }
 }
 
@@ -109,159 +127,27 @@ const Datetime = new DateTime();
 const Wood = new Resource("wood-count", "wood_progress_bar" ,"add_wood_harvester_button", "improve-wood");
 const Stone = new Resource("stone-count", "stone_progress_bar", "add_stone_harvester_button", "improve-stone");
 
-function addWoodHarvester()
+const Resources = [Wood, Stone];
+
+setInterval(function(){
+    updateResourceStates();
+    updateDate();
+}, 1000);
+
+function updateResourceStates()
 {
-    if (Wood.harvester_status == 0)
-        disableWoodButtonsForAddHarvester();
-    Wood.harvester_status++;
-    if (Wood.harvester_status == 11) {
-        Wood.harvester_count++;
-        Wood.harvester_status = 0;
-        enableWoodButtons();
-        updateWoodProgressBar(Wood.harvester_status);
-    } else {
-        updateWoodProgressBar(Wood.harvester_status);
+    for (const element of Resources) {
+        if (element.harvester_status)
+            element.addHarvester();
+        if (element.improvement_status)
+            element.improve();
+
+        element.processHarvester();
+        element.updateResourceValue(element.amount_id);
     }
-}
-
-function addStoneHarvester()
-{
-    if (Stone.harvester_status == 0)
-        disableStoneButtonsForAddHarvester();
-    Stone.harvester_status++;
-    if (Stone.harvester_status == 11) {
-        Stone.harvester_count++;
-        Stone.harvester_status = 0;
-        enableStoneButtons();
-        updateStoneProgressBar(Stone.harvester_status);
-    } else {
-        updateStoneProgressBar(Stone.harvester_status);
-    }
-}
-
-function improveWood() 
-{
-    if (Wood.improvement_status == 0)
-        disableWoodButtonsForImprovement();
-    Wood.improvement_status++;
-    if (Wood.improvement_status == 11) {
-        Wood.harvest_strength++;
-        Wood.improvement_status = 0;
-        enableWoodButtons();
-        updateWoodProgressBar(Wood.improvement_status);
-    } else {
-        updateWoodProgressBar(Wood.improvement_status);
-    }
-}
-
-function improveStone() 
-{
-    if (Stone.improvement_status == 0)
-        disableStoneButtonsForImprovement();
-    Stone.improvement_status++;
-    if (Stone.improvement_status == 11) {
-        Stone.harvest_strength++;
-        Stone.improvement_status = 0;
-        enableStoneButtons();
-        updateStoneProgressBar(Stone.improvement_status);
-    } else {
-        updateStoneProgressBar(Stone.improvement_status);
-    }
-}
-
-function disableStoneButtonsForAddHarvester()
-{
-    document.getElementById("add_stone_harvester_button").disabled = true;
-    document.getElementById("improve-stone").disabled = true;
-    document.getElementById("add_stone_harvester_button").value = "Building...";
-}
-
-function disableWoodButtonsForAddHarvester()
-{
-    document.getElementById("add_wood_harvester_button").disabled = true;
-    document.getElementById("improve-wood").disabled = true;
-    document.getElementById("add_wood_harvester_button").value = "Building...";
-}
-
-function disableStoneButtonsForImprovement()
-{
-    document.getElementById("add_stone_harvester_button").disabled = true;
-    document.getElementById("improve-stone").disabled = true;
-    document.getElementById("improve-stone").value = "Improving...";
-}
-
-function disableWoodButtonsForImprovement()
-{
-    document.getElementById("add_wood_harvester_button").disabled = true;
-    document.getElementById("improve-wood").disabled = true;
-    document.getElementById("improve-wood").value = "Improving...";
-}
-
-function enableStoneButtons()
-{
-    harvester_button = document.getElementById("add_stone_harvester_button");
-    harvester_button.disabled = false;
-    harvester_button.value = "Invest";
-
-    improve_button = document.getElementById("improve-stone");
-    improve_button.disabled = false;
-    improve_button.value = "Improve";
-}
-
-function enableWoodButtons()
-{
-    harvester_button = document.getElementById("add_wood_harvester_button");
-    harvester_button.disabled = false;
-    harvester_button.value = "Invest";
-
-    improve_button = document.getElementById("improve-wood");
-    improve_button.disabled = false;
-    improve_button.value = "Improve";
-}
-
-function processHarvestersAndImprovements()
-{
-    if (Wood.harvester_status)
-        Wood.addHarvester();
-    if (Stone.harvester_status)
-        Stone.addHarvester();
-    if (Wood.improvement_status)
-        improveWood();
-    if (Stone.improvement_status)
-        improveStone();
-
-    Wood.processHarvester();
-    Stone.processHarvester();
-}
-
-
-
-function updateWoodProgressBar(tracked_progress) {
-    var element = document.getElementById("wood_progress_bar");
-    var width_increment = 10;
-    var current_width = width_increment * tracked_progress;
-    element.style.width = current_width + '%';
-}
-
-function updateStoneProgressBar(tracked_progress) {
-    var element = document.getElementById("stone_progress_bar");
-    var width_increment = 10;
-    var current_width = width_increment * tracked_progress;
-    element.style.width = current_width+ '%';
 }
 
 function updateDate(){
     Datetime.advanceTime();
     document.getElementById("currentgamedate").textContent = Datetime.getCurrentGameDate();
 }
-
-function updateResourceValues() {
-    Wood.updateResouceValue('wood-count');
-    Stone.updateResouceValue('stone-count');
-}
-
-setInterval(function(){
-    processHarvestersAndImprovements();
-    updateResourceValues();
-    updateDate();
-}, 1000);
