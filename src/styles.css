@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.css';
+
+.game-container {
+    max-width: 600px;
+    height: max-content;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.resource-container {
+    max-height: 500px;
+    overflow: auto;
+}

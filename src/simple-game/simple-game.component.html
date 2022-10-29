@@ -1,0 +1,14 @@
+<div class="game-container">
+
+    <div class="card overflow-auto" *ngIf="resources">
+        <div class="card-header">Simple game</div>
+        <div class="card-body" id="collapseOne">
+            <div class="h2 mb-3 card-title" *ngIf="gameTime"> {{ gameTime | gameDate: 6 }}</div>
+            <div class="resource-container">
+                <ng-container *ngFor="let resource of resources">
+                    <app-resource [resource]="resource"></app-resource>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
