@@ -1,4 +1,5 @@
 import { style } from '@angular/animations';
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Resource } from 'src/DTO/resource';
 import { ResourceService } from 'src/services/resource.service';
@@ -12,7 +13,6 @@ export class ResourceComponent implements OnInit {
   @Input()
   resource: Resource | undefined;
 
-  counter = 0;
   title = "title"
 
   constructor(private resourceService: ResourceService) { }
@@ -29,27 +29,13 @@ export class ResourceComponent implements OnInit {
   }
 
   addAutoHarvester() {
-    let progressive_bar = document.getElementById("progressive-bar");
-    if (progressive_bar != null) {
-      progressive_bar.textContent = "Progressing epicly";
-    }
-    this.updateProgressBar();
-    setTimeout(() => this.buyAutoHarvester(), 10000);
-  }
+    if (!this.resource) return
+    this.resourceService.buyAutoHarvester(this.resource.id).subscribe(resource => {
+      this.resource = resource
+    })
+    this.resource.progbarActive = "Working...";
 
-  updateProgressBar() {
-    if (this.counter < 100){
-      this.counter += 10;
-      let progressive_bar_bar = document.getElementById("progressive-bar-bar");
-      if (progressive_bar_bar != null) {
-        let progressive_bar_bar_width = document.getElementById("progressive-bar-bar")?.style.width.valueOf();
-        progressive_bar_bar_width?.replace('%', ' ');
-        let new_progress = progressive_bar_bar_width as unknown as number;
-        new_progress = new_progress + 1;
-        progressive_bar_bar.style.width = this.counter + "%";
-      }
-      var active_progress_bar = setTimeout(()=> this.updateProgressBar(), 1000);
-    }
+    setTimeout(() => this.buyAutoHarvester(), 10000);
   }
 
   buyAutoHarvester() {
@@ -59,13 +45,19 @@ export class ResourceComponent implements OnInit {
     })
     let progressive_bar = document.getElementById("progressive-bar");
     if (progressive_bar != null) {
-      progressive_bar.textContent = "Idle"
+      this.resource.progbarActive = "Idle";
     }
     let progressive_bar_bar = document.getElementById("progressive-bar-bar");
     if (progressive_bar_bar != null) {
       progressive_bar_bar.style.width = "0" + "%";
     }
-    this.counter = 0;
+  }
+
+  setAutoHarvesterCount() {
+    if (!this.resource) return
+    if (this.resource.autoHarvesterCount) {
+      this.resource.autoHarvesterCount++;
+    }
   }
 
   improveAutoHarvester() {

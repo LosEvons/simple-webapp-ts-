@@ -7,6 +7,7 @@ export class Resource {
     autoHarvesterStrength: number;
     autoHarvesterBuildCost: number;
     autoHarvesterImproveCost: number;
+    progbarActive: string;
 
     private static _uid: number = 0;
 
@@ -18,6 +19,7 @@ export class Resource {
     constructor(name: string, params?: any) {
         this.name = name;
         this.id = this.newUid();
+        this.progbarActive = "TEST";
 
         this.resourceCount = params?.resourceCount ?? 0;
         this.autoHarvesterCount = params?.autoHarvesterCount ?? 0;
