@@ -8,7 +8,7 @@ import { Resource } from '../DTO/resource';
 })
 export class ResourceService {
   private _resources: Array<Resource> = [
-    new Resource("wood", { autoHarvesterCount: 2 }),
+    new Resource("wood"),
     new Resource("stone"),
     new Resource("iron")
   ]

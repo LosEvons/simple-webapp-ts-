@@ -27,11 +27,24 @@ export class ResourceComponent implements OnInit {
     })
   }
 
+  addAutoHarvester() {
+    let progressive_bar = document.getElementById("progressive-bar");
+    if (progressive_bar != null) {
+      progressive_bar.textContent = "Progressing epicly";
+    }
+    setTimeout(() => this.buyAutoHarvester(), 10000);
+  }
+
   buyAutoHarvester() {
     if (!this.resource) return
     this.resourceService.buyAutoHarvester(this.resource.id).subscribe(resource => {
       this.resource = resource
     })
+    let progressive_bar = document.getElementById("progressive-bar");
+    if (progressive_bar != null) {
+      progressive_bar.textContent = "Idle"
+    }
+
   }
 
   improveAutoHarvester() {
