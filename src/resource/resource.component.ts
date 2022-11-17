@@ -34,8 +34,6 @@ export class ResourceComponent implements OnInit {
       this.resource = resource
     })
     this.resource.progbarActive = "Working...";
-
-    setTimeout(() => this.buyAutoHarvester(), 10000);
   }
 
   buyAutoHarvester() {
@@ -43,6 +41,7 @@ export class ResourceComponent implements OnInit {
     this.resourceService.buyAutoHarvester(this.resource.id).subscribe(resource => {
       this.resource = resource
     })
+    
     let progressive_bar = document.getElementById("progressive-bar");
     if (progressive_bar != null) {
       this.resource.progbarActive = "Idle";
@@ -50,13 +49,6 @@ export class ResourceComponent implements OnInit {
     let progressive_bar_bar = document.getElementById("progressive-bar-bar");
     if (progressive_bar_bar != null) {
       progressive_bar_bar.style.width = "0" + "%";
-    }
-  }
-
-  setAutoHarvesterCount() {
-    if (!this.resource) return
-    if (this.resource.autoHarvesterCount) {
-      this.resource.autoHarvesterCount++;
     }
   }
 
